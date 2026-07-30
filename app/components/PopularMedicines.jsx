@@ -1,5 +1,6 @@
 import MedicineCard from "./MedicineCard";
 
+
 export default function PopularMedicines() {
 
   const medicines = [
@@ -10,7 +11,7 @@ export default function PopularMedicines() {
       category: "Prescription",
       price: "1850",
       oldPrice: "2200",
-      discount: "16% OFF",
+    otc: false,
     },
     {
       image: "/medicine2.jpg",
@@ -19,7 +20,7 @@ export default function PopularMedicines() {
       category: "Diabetes",
       price: "1225",
       oldPrice: "1500",
-      discount: "13% OFF",
+    otc: false,
     },
     {
       image: "/medicine3.jpg",
@@ -28,7 +29,7 @@ export default function PopularMedicines() {
       category: "Wellness",
       price: "999",
       oldPrice: "1100",
-      discount: "23% OFF",
+    otc: true,
     },
     {
       image: "/medicine4.jpg",
@@ -37,32 +38,14 @@ export default function PopularMedicines() {
       category: "Prescription",
       price: "1580",
       oldPrice: "1950",
-      discount: "19% OFF",
+    otc: true,
     },
   ];
 
   return (
-    <section className="max-w-7xl mx-auto py-20">
+    <section className="max-w-7xl mx-auto py-10">
 
-      <div className="flex justify-between items-center mb-8">
 
-        <div>
-
-          <h2 className="text-4xl font-bold text-white">
-            Popular Medicines
-          </h2>
-
-          <p className="text-gray-400 mt-2">
-            Frequently ordered medicines across RxConnect.
-          </p>
-
-        </div>
-
-        <button className="text-green-500 hover:text-green-600 hover:scale-90 transition-transform">
-          View Catalogue →
-        </button>
-
-      </div>
 
       <div className="grid md:grid-cols-4 gap-8">
 
