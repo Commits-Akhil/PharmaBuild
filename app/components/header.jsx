@@ -26,11 +26,11 @@ export default function Header() {
 
           <Link href="/branches">Branches</Link>
 
-          <Link href="/upload">Upload Prescription</Link>
+          <Link href="/cart">Cart</Link>
 
           <Link href="/orders">Orders</Link>
 
-          <Link href="/about">About</Link>
+          <Link href="/tracking">Track</Link>
         </nav>
 
         <div className="flex gap-3">
