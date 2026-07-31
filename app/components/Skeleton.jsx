@@ -1,3 +1,4 @@
+
 export function SkeletonBox({ className = "" }) {
   return (
     <div className={`bg-[#1f2f48] animate-pulse rounded-xl ${className}`} />

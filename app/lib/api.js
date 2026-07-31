@@ -1,3 +1,4 @@
+
 import axios from "axios";
 
 const API_BASE_URL =
@@ -30,7 +31,7 @@ api.interceptors.response.use(
       window.location.href = "/Login";
     }
     return Promise.reject(error);
-  },
+  }
 );
 
 export default api;
@@ -59,19 +60,4 @@ export function storeAuth(token, user) {
 export function clearAuth() {
   localStorage.removeItem("rx_token");
   localStorage.removeItem("rx_user");
-}
-
-export function updateStoredUser(partialData) {
-  if (typeof window === "undefined") return null;
-  try {
-    const current = getStoredUser();
-    if (current) {
-      const updated = { ...current, ...partialData };
-      localStorage.setItem("rx_user", JSON.stringify(updated));
-      return updated;
-    }
-  } catch {
-    return null;
-  }
-  return null;
 }
