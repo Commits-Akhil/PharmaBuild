@@ -37,40 +37,16 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await api.post("/auth/login", {
-        email: email,
-        password: password,
+      const res = await axios.post("http://localhost:5000/login", {
+        email,
+        password,
       });
 
-      const token = res.data.data.token;
-      const user = res.data.data.user;
+      localStorage.setItem("token", res.data.token);
 
-      storeAuth(token, user);
-
-      let name = "User";
-
-      if (user.name) {
-        name = user.name;
-      }
-
-      toast("Welcome back, " + name + "!", "success");
-
-      if (user.role === "admin") {
-        router.push("/Admin");
-      } else if (user.role === "pharmacist") {
-        router.push("/branch");
-      } else {
-        router.push("/");
-      }
+      alert("Login Successful");
     } catch (err) {
-      let msg = "Login failed. Please check your credentials.";
-
-      if (err.response && err.response.data && err.response.data.message) {
-        msg = err.response.data.message;
-      }
-
-      setError(msg);
-      toast(msg, "error");
+      alert("Login Failed");
     }
 
     setLoading(false);

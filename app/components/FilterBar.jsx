@@ -1,4 +1,4 @@
-import CategoryFilter from "./CategoryFilter"
+import CategoryFilter from "./CategoryFilter";
 
 export default function FilterBar() {
   return (
@@ -21,8 +21,6 @@ export default function FilterBar() {
         </div>
 
         <div className="flex items-center gap-8">
-
-
           <span className="text-gray-400">Showing 7 items</span>
         </div>
       </div>
