@@ -1,60 +1,52 @@
-import MedicineCard from "./MedicineCard";
+"use client";
 
+import { useEffect } from "react";
+import MedicineCard from "./MedicineCard";
+import useMedicineStore from "../Store/medicine";
 
 export default function PopularMedicines() {
+  const { medicines, loading, error, fetchMedicines } = useMedicineStore();
 
-  const medicines = [
-    {
-      image: "/medicine1.jpg",
-      name: "Amoxicillin & Potassium",
-      company: "Amoxicillin + Clavulanic Acid",
-      category: "Prescription",
-      price: "1850",
-      oldPrice: "2200",
-    otc: false,
-    },
-    {
-      image: "/medicine2.jpg",
-      name: "Metformin Hydrochloride",
-      company: "Metformin Sustained Release",
-      category: "Diabetes",
-      price: "1225",
-      oldPrice: "1500",
-    otc: false,
-    },
-    {
-      image: "/medicine3.jpg",
-      name: "Vitamin D3 60000 IU",
-      company: "Cholecalciferol",
-      category: "Wellness",
-      price: "999",
-      oldPrice: "1100",
-    otc: true,
-    },
-    {
-      image: "/medicine4.jpg",
-      name: "Atorvastatin Calcium",
-      company: "Atorvastatin",
-      category: "Prescription",
-      price: "1580",
-      oldPrice: "1950",
-    otc: true,
-    },
-  ];
+  useEffect(() => {
+    if (medicines.length === 0) {
+      fetchMedicines();
+    }
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+          {[...Array(4)].map((_, i) => (
+            <div
+              key={i}
+              className="bg-[#141B2D] rounded-3xl h-64 animate-pulse border border-gray-700"
+            />
+          ))}
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+        <div className="text-red-400 text-center py-8 text-sm sm:text-base">
+          {error}
+        </div>
+      </section>
+    );
+  }
+
+  const display = medicines.slice(0, 8);
 
   return (
-    <section className="max-w-7xl mx-auto py-10">
-
-
-
-      <div className="grid md:grid-cols-4 gap-8">
-
-        {medicines.map((item, index) => (
-          <MedicineCard key={index} {...item} />
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+        {display.map((medicine) => (
+          <MedicineCard key={medicine.id} medicine={medicine} />
         ))}
-
       </div>
-
     </section>
   );
 }
