@@ -62,7 +62,7 @@ export default function LoginPage() {
       <div className="grid w-full max-w-7xl grid-cols-1 md:grid-cols-12 overflow-hidden rounded-2xl sm:rounded-3xl border border-gray-800 shadow-2xl">
         <div className="relative hidden md:block md:col-span-5 overflow-hidden bg-gradient-to-br from-emerald-600 via-teal-700 to-green-900 min-h-[500px]">
           <Image
-            src="/dr.jpeg"
+            src="/doctor.jpeg"
             alt="Medical Illustration"
             fill
             priority
@@ -161,6 +161,7 @@ export default function LoginPage() {
               </Link>
             </p>
           </div>
+
         </div>
       </div>
     </div>
