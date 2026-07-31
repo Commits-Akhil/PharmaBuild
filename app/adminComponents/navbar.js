@@ -1,7 +1,9 @@
 export default function Navbar() {
   return (
     <nav className="bg-white shadow-md px-8 py-4 flex justify-between items-center">
-      <h1 className="text-2xl font-bold">PharmaBuild Admin</h1>
+      <h1 className="text-2xl font-bold">
+        PharmaBuild Admin
+      </h1>
 
       <div className="flex items-center gap-8">
         <div className="flex gap-6 text-gray-600 font-medium">
