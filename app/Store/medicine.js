@@ -1,17 +1,21 @@
 import { create } from "zustand";
-import axios from "axios";
+import api from "../lib/api";
 
 const useMedicineStore = create((set) => ({
   medicines: [],
+  loading: false,
+  error: null,
 
   fetchMedicines: async () => {
-    const response = await axios.get(
-      "http://localhost:5000/api/medicines"
-    );
-
-    set({
-      medicines: response.data,
-    });
+    set({ loading: true, error: null });
+    try {
+      const response = await api.get("/medicines");
+      const medicines = response.data?.data?.medicines ?? [];
+      set({ medicines, loading: false });
+    } catch (err) {
+      const msg = err.response?.data?.message || "Failed to fetch medicines.";
+      set({ error: msg, loading: false });
+    }
   },
 }));
 
