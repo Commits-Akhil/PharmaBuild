@@ -38,7 +38,6 @@ export default function AdminPage() {
   const [fetchFailed, setFetchFailed] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // Modal for today's orders by branch
   const [selectedBranchToday, setSelectedBranchToday] = useState(null);
   const [todayOrdersModal, setTodayOrdersModal] = useState(null);
   const [todayLoading, setTodayLoading] = useState(false);
@@ -155,7 +154,6 @@ export default function AdminPage() {
             </div>
           </section>
 
-          {/* Navigation Tabs */}
           <div className="flex items-center gap-2 sm:gap-3 mb-6 sm:mb-8 overflow-x-auto pb-2 border-b border-white/10 no-scrollbar">
             <button
               onClick={() => setActiveTab("overview")}

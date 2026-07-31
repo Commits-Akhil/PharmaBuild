@@ -37,109 +37,21 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await api.post("/auth/login", {
-        email: email,
-        password: password,
+      const res = await axios.post("http://localhost:5000/login", {
+        email,
+        password,
       });
 
-      const token = res.data.data.token;
-      const user = res.data.data.user;
+      localStorage.setItem("token", res.data.token);
 
-      storeAuth(token, user);
-
-      let name = "User";
-
-      if (user.name) {
-        name = user.name;
-      }
-
-      toast("Welcome back, " + name + "!", "success");
-
-      if (user.role === "admin") {
-        router.push("/Admin");
-      } else if (user.role === "pharmacist") {
-        router.push("/branch");
-      } else {
-        router.push("/");
-      }
+      alert("Login Successful");
     } catch (err) {
-      let msg = "Login failed. Please check your credentials.";
-
-      if (
-        err.response &&
-        err.response.data &&
-        err.response.data.message
-      ) {
-        msg = err.response.data.message;
-      }
-
-      setError(msg);
-      toast(msg, "error");
+      alert("Login Failed");
     }
 
     setLoading(false);
   }
-  async function handleLogin() {
-  setError("");
-
-  const result = LoginSchema.safeParse({
-    email: email,
-    password: password,
-  });
-
-  if (!result.success) {
-    setError(result.error.issues[0].message);
-    return;
-  }
-
-  setLoading(true);
-
-  try {
-    const res = await api.post("/auth/login", {
-      email: email,
-      password: password,
-    });
-
-    const token = res.data.data.token;
-    const user = res.data.data.user;
-
-    storeAuth(token, user);
-
-    let name = "User";
-
-    if (user.name) {
-      name = user.name;
-    }
-
-    toast("Welcome back, " + name + "!", "success");
-
-    if (user.role === "admin") {
-      router.push("/Admin");
-    } else if (user.role === "pharmacist") {
-      router.push("/branch");
-    } else {
-      router.push("/");
-    }
-
-  } catch (err) {
-
-    let msg = "Login failed. Please check your credentials.";
-
-    if (
-      err.response &&
-      err.response.data &&
-      err.response.data.message
-    ) {
-      msg = err.response.data.message;
-    }
-
-    setError(msg);
-    toast(msg, "error");
-
-  } finally {
-    setLoading(false);
-  }
-}  let buttonText = "Sign In →";
+  let buttonText = "Sign In →";
 
   if (loading) {
     buttonText = "Logging in...";
@@ -148,7 +60,6 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#0b1120] p-4 sm:p-6">
       <div className="grid w-full max-w-7xl grid-cols-1 md:grid-cols-12 overflow-hidden rounded-2xl sm:rounded-3xl border border-gray-800 shadow-2xl">
-
         <div className="relative hidden md:block md:col-span-5 overflow-hidden bg-gradient-to-br from-emerald-600 via-teal-700 to-green-900 min-h-[500px]">
           <Image
             src="/doctor.jpeg"
@@ -180,9 +91,7 @@ export default function LoginPage() {
         </div>
 
         <div className="md:col-span-7 flex items-center justify-center bg-[#111827] px-5 py-8 sm:px-10 sm:py-12 md:px-16">
-
           <div className="w-full max-w-md">
-
             <div className="mb-6 sm:mb-10">
               <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
                 Sign In
@@ -200,7 +109,6 @@ export default function LoginPage() {
             )}
 
             <div className="space-y-4 sm:space-y-6">
-
               <div>
                 <label className="mb-2 block text-xs font-semibold uppercase text-gray-300">
                   Email Address
@@ -241,7 +149,6 @@ export default function LoginPage() {
               >
                 {buttonText}
               </button>
-
             </div>
 
             <p className="mt-6 sm:mt-8 text-center text-xs sm:text-sm text-gray-400">
@@ -253,11 +160,9 @@ export default function LoginPage() {
                 Register
               </Link>
             </p>
-
           </div>
 
         </div>
-
       </div>
     </div>
   );
