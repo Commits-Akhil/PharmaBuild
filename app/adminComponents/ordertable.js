@@ -1,52 +1,136 @@
+"use client";
+
+import { FileText } from "lucide-react";
+
 export default function OrdersTable({ orders, fetchFailed }) {
   if (fetchFailed) {
     return (
-      <div className="bg-white rounded-xl shadow-md p-5 mt-8">
-        Failed to fetch data.
+      <div className="bg-[#161F33] rounded-[24px] sm:rounded-[28px] border border-red-500/30 p-5 sm:p-6 text-center text-red-400 text-xs sm:text-sm">
+        Failed to fetch global orders. Please ensure you are logged in as Admin.
       </div>
     );
   }
 
-  const recentOrders = orders
-    .slice()
-    .sort((a, b) => b.order_id - a.order_id)
-    .slice(0, 5);
+  const sortedOrders = [...orders];
+
+  sortedOrders.sort((a, b) => {
+    return b.order_id - a.order_id;
+  });
 
   return (
-    <div className="bg-white rounded-xl shadow-md p-5 mt-8">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-semibold">Recent Orders</h2>
+    <div className="bg-[#161F33] rounded-[24px] sm:rounded-[28px] border border-white/10 p-4 sm:p-6 shadow-xl">
 
-        <p className="text-sm text-gray-500">Showing latest 5 orders</p>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 sm:mb-6">
+        <div>
+          <h3 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
+            <FileText className="text-emerald-400" size={22} />
+            System Orders
+          </h3>
+
+          <p className="text-xs sm:text-sm text-gray-400 mt-1">
+            Global real-time listing of customer orders across all branches.
+          </p>
+        </div>
+
+        <span className="bg-[#0D1527] text-emerald-400 text-xs px-3.5 py-1.5 rounded-full border border-white/5 font-mono">
+          Total: {orders.length} Orders
+        </span>
       </div>
 
       <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead className="bg-gray-100 border-b">
-            <tr>
-              <th className="text-left p-3">Order ID</th>
-              <th className="text-left p-3">Customer</th>
-              <th className="text-left p-3">Branch</th>
-              <th className="text-left p-3">Status</th>
-              <th className="text-left p-3">Verification</th>
+        <table className="w-full text-left text-xs sm:text-sm text-gray-300">
+
+          <thead>
+            <tr className="border-b border-white/10 text-gray-400 uppercase text-[10px] sm:text-xs tracking-wider">
+              <th className="pb-3 px-3">Order ID</th>
+              <th className="pb-3 px-3">Customer</th>
+              <th className="pb-3 px-3">Branch</th>
+              <th className="pb-3 px-3">Status</th>
+              <th className="pb-3 px-3">Rx Review</th>
+              <th className="pb-3 px-3">Date</th>
             </tr>
           </thead>
 
           <tbody>
-            {recentOrders.map((order) => (
-              <tr key={order.order_id} className="border-b hover:bg-gray-50">
-                <td className="p-3">#{order.order_id}</td>
 
-                <td className="p-3">{order.customer_name}</td>
-
-                <td className="p-3">{order.branch_name}</td>
-
-                <td className="p-3">{order.status}</td>
-
-                <td className="p-3">{order.verification_status}</td>
+            {sortedOrders.length === 0 && (
+              <tr>
+                <td colSpan={6} className="py-8 text-center text-gray-500">
+                  No orders recorded in system yet.
+                </td>
               </tr>
-            ))}
+            )}
+
+            {sortedOrders.map((order) => {
+
+              let statusStyle = "bg-blue-500/20 text-blue-300";
+
+              if (order.status === "Delivered") {
+                statusStyle = "bg-emerald-500/20 text-emerald-300";
+              } else if (order.status === "Rejected") {
+                statusStyle = "bg-rose-500/20 text-rose-300";
+              }
+
+              let reviewStyle = "bg-amber-500/20 text-amber-300";
+
+              if (order.verification_status === "Approved") {
+                reviewStyle = "bg-emerald-500/20 text-emerald-300";
+              } else if (order.verification_status === "Rejected") {
+                reviewStyle = "bg-rose-500/20 text-rose-300";
+              }
+
+              const customer = order.customer_name || "Customer";
+              const branch = order.branch_name || "Branch";
+              const date = new Date(order.created_at).toLocaleDateString();
+
+              return (
+                <tr
+                  key={order.order_id}
+                  className="border-b border-white/5 hover:bg-[#1f2d47]/50 transition"
+                >
+                  <td className="py-3 px-3 font-mono font-bold text-white whitespace-nowrap">
+                    #{order.order_id}
+                  </td>
+
+                  <td className="py-3 px-3 font-medium text-white whitespace-nowrap">
+                    {customer}
+                  </td>
+
+                  <td className="py-3 px-3 text-gray-300 whitespace-nowrap">
+                    {branch}
+                  </td>
+
+                  <td className="py-3 px-3 whitespace-nowrap">
+                    <span
+                      className={`px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-semibold ${statusStyle}`}
+                    >
+                      {order.status}
+                    </span>
+                  </td>
+
+                  <td className="py-3 px-3 whitespace-nowrap">
+                    {order.requires_prescription ? (
+                      <span
+                        className={`px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-semibold ${reviewStyle}`}
+                      >
+                        {order.verification_status || "Pending"}
+                      </span>
+                    ) : (
+                      <span className="text-gray-500 text-[10px] sm:text-xs">
+                        Not Required
+                      </span>
+                    )}
+                  </td>
+
+                  <td className="py-3 px-3 text-gray-400 whitespace-nowrap">
+                    {date}
+                  </td>
+                </tr>
+              );
+            })}
+
           </tbody>
+
         </table>
       </div>
     </div>
