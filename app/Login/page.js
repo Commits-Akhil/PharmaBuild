@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import axios from "axios";
+import api from "../lib/api";
 import { z } from "zod";
 
 export default function LoginPage() {
@@ -27,16 +27,20 @@ export default function LoginPage() {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/login", {
+      const res = await api.post("/auth/login", {
         email,
         password,
       });
 
-      localStorage.setItem("token", res.data.token);
+      const token = res.data?.data?.token || res.data?.token;
+      if (token) {
+        localStorage.setItem("token", token);
+      }
 
       alert("Login Successful");
+      window.location.href = "/";
     } catch (err) {
-      alert("Login Failed");
+      alert(err.response?.data?.message || err.message || "Login Failed");
     }
   };
 

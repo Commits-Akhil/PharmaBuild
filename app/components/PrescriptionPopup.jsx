@@ -1,93 +1,128 @@
-import { Upload, ShieldCheck } from "lucide-react";
-import BranchSection from "./BranchSection";
+"use client";
 
-export default function PrescriptionPopup({ showPopup, setShowPopup }) {
+import { Upload, ShieldCheck } from "lucide-react";
+import { useState } from "react";
+import api from "../lib/api";
+
+export default function PrescriptionPopup({
+  showPopup,
+  setShowPopup,
+  orderId: propOrderId,
+}) {
+  const [file, setFile] = useState(null);
+  const [orderId, setOrderId] = useState(
+    propOrderId ? String(propOrderId) : "",
+  );
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+
   if (!showPopup) return null;
-  const branches = [
-    {
-      id: 1,
-      name: "RxConnect Central - Healthcare Hub",
-      location: "MG Road, Bengaluru",
-      address: "12 MG Road, Bengaluru, Karnataka - 560001",
-      phone: "+91 98765 43210",
-    },
-    {
-      id: 2,
-      name: "RxConnect Westside Pharmacy",
-      location: "Rajajinagar, Bengaluru",
-      address: "45 West Park Road, Rajajinagar, Bengaluru - 560010",
-      phone: "+91 98765 43211",
-    },
-    {
-      id: 3,
-      name: "RxConnect North Care Express",
-      location: "Hebbal, Bengaluru",
-      address: "78 Bellary Road, Hebbal, Bengaluru - 560024",
-      phone: "+91 98765 43212",
-    },
-    {
-      id: 4,
-      name: "RxConnect Downtown Wellness Center",
-      location: "Koramangala, Bengaluru",
-      address: "22 80 Feet Road, Koramangala, Bengaluru - 560034",
-      phone: "+91 98765 43213",
-    },
-  ];
+
+  const handleSubmit = async () => {
+    setError("");
+    if (!orderId || isNaN(Number(orderId))) {
+      setError("Please enter a valid Order ID.");
+      return;
+    }
+    if (!file) {
+      setError("Please select a prescription file.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("orderId", String(orderId));
+      formData.append("prescription", file);
+      await api.post("/prescriptions/upload", formData);
+      setSuccess(true);
+      setTimeout(() => {
+        setShowPopup(false);
+        setSuccess(false);
+        setFile(null);
+      }, 2000);
+    } catch (err) {
+      setError(err.response?.data?.message || "Upload failed.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
-      <div className="bg-[#161F33] w-full max-w-2xl rounded-3xl p-8 border border-white/10 relative">
+    <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+      <div className="bg-[#161F33] w-full max-w-2xl rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-white/10 relative shadow-2xl max-h-[90vh] overflow-y-auto">
         <button
           onClick={() => setShowPopup(false)}
-          className="absolute top-5 right-5 text-gray-400 text-2xl"
+          className="absolute top-4 right-4 text-gray-400 hover:text-white text-xl p-1 bg-black/40 rounded-full w-8 h-8 flex items-center justify-center z-10"
         >
           ✕
         </button>
 
-        <h2 className="text-3xl font-semibold text-white flex items-center gap-3">
-          <Upload className="text-blue-500" />
+        <h2 className="text-xl sm:text-3xl font-semibold text-white flex items-center gap-2.5 sm:gap-3 pr-8">
+          <Upload className="text-blue-500 shrink-0" size={24} />
           Upload Prescription
         </h2>
 
-        <div className="border-2 border-dashed border-gray-600 rounded-3xl mt-8 h-[230px] flex flex-col justify-center items-center">
-          <div className="bg-blue-900 p-5 rounded-3xl">
-            <Upload className="text-blue-500" size={40} />
+        {!propOrderId && (
+          <div className="mt-4 sm:mt-6">
+            <label className="text-white block mb-2 text-xs sm:text-sm font-medium">
+              Order ID
+            </label>
+            <input
+              type="number"
+              placeholder="Enter Order ID"
+              value={orderId}
+              onChange={(e) => setOrderId(e.target.value)}
+              className="w-full bg-[#111B2F] border border-gray-700 rounded-xl p-3 sm:p-4 text-xs sm:text-sm text-white outline-none focus:border-blue-500"
+            />
+          </div>
+        )}
+
+        <div className="border-2 border-dashed border-gray-600 rounded-2xl sm:rounded-3xl mt-6 sm:mt-8 min-h-[200px] sm:min-h-[230px] p-4 flex flex-col justify-center items-center text-center">
+          <div className="bg-blue-900/60 p-4 sm:p-5 rounded-2xl sm:rounded-3xl mb-3 sm:mb-4">
+            <Upload className="text-blue-400" size={32} />
           </div>
 
-          <p className="text-white text-lg font-semibold mt-6">
+          <p className="text-white text-base sm:text-lg font-semibold">
             Click or Drag Prescription Here
           </p>
 
-          <p className="text-gray-400 mt-2">PDF, JPG, PNG (Max 15MB)</p>
+          <p className="text-gray-400 text-xs sm:text-sm mt-1">
+            JPG, PNG, WebP (Max 5MB)
+          </p>
 
           <input
             type="file"
-            accept=".pdf,.jpg,.jpeg,.png"
-            className="mt-6 text-white"
+            accept=".jpg,.jpeg,.png,.webp,.gif"
+            className="mt-4 sm:mt-6 text-xs sm:text-sm text-white max-w-full"
+            onChange={(e) => setFile(e.target.files[0])}
           />
+          {file && (
+            <p className="text-emerald-400 text-xs sm:text-sm mt-2 font-medium">
+              {file.name}
+            </p>
+          )}
         </div>
 
-        <div className="mt-8">
-          <label className="text-white block mb-3">Select Branch</label>
-
-          <select className="w-full bg-[#111B2F] border border-gray-700 rounded-xl p-4 text-white">
-            {branches.map((branch) => (
-              <option key={branch.id} value={branch.id}>
-                {branch.name} • {branch.location}
-              </option>
-            ))}
-          </select>
-        </div>
+        {error && (
+          <p className="text-rose-400 mt-4 text-xs sm:text-sm font-medium">
+            {error}
+          </p>
+        )}
+        {success && (
+          <p className="text-emerald-400 mt-4 text-xs sm:text-sm font-medium">
+            ✓ Uploaded! Awaiting pharmacist review.
+          </p>
+        )}
 
         <button
-          onClick={() => {
-            alert("Prescription Submitted Successfully");
-            setShowPopup(false);
-          }}
-          className="w-full mt-8 bg-blue-600 hover:bg-blue-700 py-4 rounded-full text-white font-semibold flex justify-center items-center gap-2"
+          onClick={handleSubmit}
+          disabled={loading}
+          className="w-full mt-6 sm:mt-8 bg-blue-600 hover:bg-blue-500 py-3 sm:py-4 rounded-xl sm:rounded-full text-white text-xs sm:text-sm font-semibold flex justify-center items-center gap-2 disabled:opacity-60 shadow-lg shadow-blue-900/30"
         >
-          <ShieldCheck size={20} />
-          Submit for Pharmacist Verification
+          <ShieldCheck size={18} />
+          {loading ? "Uploading…" : "Submit for Pharmacist Verification"}
         </button>
       </div>
     </div>
