@@ -41,6 +41,7 @@ export default function Header() {
           </Link>
         </div>
 
+        {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8 text-gray-700 font-medium">
           <Link href="/" className="hover:text-green-600 transition">
             Home
@@ -51,10 +52,7 @@ export default function Header() {
           <Link href="/branches" className="hover:text-green-600 transition">
             Branches
           </Link>
-          <Link
-            href="/cart"
-            className="relative hover:text-green-600 transition"
-          >
+          <Link href="/cart" className="relative hover:text-green-600 transition">
             Cart
             {cartCount > 0 && (
               <span className="absolute -top-2 -right-3 bg-green-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
@@ -77,6 +75,7 @@ export default function Header() {
           )}
         </nav>
 
+        {/* Desktop User Actions */}
         <div className="hidden md:flex gap-3 items-center">
           {user ? (
             <>
@@ -109,12 +108,9 @@ export default function Header() {
           )}
         </div>
 
+        {/* Mobile Header Right Controls */}
         <div className="flex md:hidden items-center gap-3">
-          <Link
-            href="/cart"
-            onClick={closeMenu}
-            className="relative p-2 text-gray-700"
-          >
+          <Link href="/cart" onClick={closeMenu} className="relative p-2 text-gray-700">
             <ShoppingCart size={22} />
             {cartCount > 0 && (
               <span className="absolute top-0 right-0 bg-green-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
@@ -132,6 +128,7 @@ export default function Header() {
         </div>
       </div>
 
+      {/* Mobile Navigation Drawer */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-white border-t border-gray-200 px-6 py-4 space-y-4 shadow-lg animate-slideIn">
           <nav className="flex flex-col gap-3 font-medium text-gray-800">
@@ -233,3 +230,4 @@ export default function Header() {
     </header>
   );
 }
+

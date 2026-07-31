@@ -47,7 +47,7 @@ export default function Hero() {
 
         <div className="mt-4 lg:mt-0">
           <img
-            src="doctor .jpeg"
+            src="doctor.jpeg"
             width={600}
             height={700}
             alt="Doctor"
