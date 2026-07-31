@@ -1,88 +1,252 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Header from "../components/header";
 import Footer from "../components/footer";
+import api from "../lib/api";
+
 export default function ProfilePage() {
-  return (<>
-  <Header/>
-    <div className="bg-[#0B1220] min-h-screen p-8 text-white">
-      <div className="max-w-7xl mx-auto">
-        <div className="bg-gradient-to-r from-gray-900 to-green-500 rounded-3xl p-8 flex items-center gap-6">
-          <img
-            src="https://i.pravatar.cc"
-            alt="profile"
-            className="w-24 h-24 rounded-full border-4 border-white"
-          />
+  const [profile, setProfile] = useState({
+    id: null,
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    role: "",
+    created_at: "",
+  });
 
-          <div>
-            <h1 className="text-4xl font-bold">Eleanor Vance</h1>
+  const [loading, setLoading] = useState(true);
 
-            <p className="text-gray-200 mt-1">
-              eleanor.vance@healthnet.com • Patient ID #CUST-9021
-            </p>
+  useEffect(() => {
+    fetchProfile();
+  }, []);
 
-            <div className="flex gap-3 mt-4">
-              <span className="bg-green-600 px-4 py-1 rounded-full text-sm">
-                Verified Patient
-              </span>
-            </div>
-          </div>
+  async function fetchProfile() {
+    try {
+      const res = await api.get("/auth/profile");
+
+      const user = res.data.data.user;
+
+      setProfile({
+        id: user.id ?? null,
+        name: user.name ?? "",
+        email: user.email ?? "",
+        phone: user.phone ?? "",
+        address: user.address ?? "",
+        role: user.role ?? "",
+        created_at: user.created_at ?? "",
+      });
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  if (loading) {
+    return (
+      <>
+        <Header />
+        <div className="min-h-screen bg-[#0B1220] flex justify-center items-center text-white text-xl">
+          Loading...
         </div>
+        <Footer />
+      </>
+    );
+  }
 
-        <div className="grid lg:grid-cols-3 gap-8 mt-8">
-          <div className="lg:col-span-2 bg-[#161F33] rounded-3xl p-8">
-            <h2 className="text-2xl font-semibold mb-8">
-              Personal Information
-            </h2>
+  return (
+    <>
+      <Header />
 
-            <label className="block mb-2">Full Name</label>
+      <div className="bg-[#0B1220] min-h-screen p-8 text-white">
+        <div className="max-w-7xl mx-auto">
 
-            <input
-              className="w-full bg-[#263149] p-4 rounded-xl mb-6 outline-none"
-              defaultValue="Eleanor Vance"
-            />
+          <div className="bg-gradient-to-r from-gray-900 to-green-600 rounded-3xl p-8 flex items-center gap-6">
 
-            <label className="block mb-2">Phone Number</label>
+            <div className="w-24 h-24 rounded-full bg-[#263149] flex justify-center items-center text-4xl font-bold">
+              {profile.name ? profile.name[0].toUpperCase() : "U"}
+            </div>
 
-            <input
-              className="w-full bg-[#263149] p-4 rounded-xl mb-6 outline-none"
-              defaultValue="+91 1234567890"
-            />
+            <div>
 
-            <label className="block mb-2">Default Delivery Address</label>
+              <h1 className="text-4xl font-bold">
+                {profile.name || "Not Available"}
+              </h1>
 
-            <textarea
-              rows="4"
-              className="w-full bg-[#263149] p-4 rounded-xl outline-none"
-              defaultValue="742 Evergreen Terrace, Apt 4B, Central City, CA 90210"
-            />
+              <p className="text-gray-200 mt-2">
+                {profile.email || "Not Available"}
+              </p>
 
-            <button className="mt-8 bg-green-500 px-8 py-3 rounded-xl font-semibold hover:bg-green-700">
-              Save Profile Details
-            </button>
-          </div>
+              <p className="text-gray-300 mt-1">
+                User ID : {profile.id || "N/A"}
+              </p>
 
-          <div className="space-y-8">
-            <div className="bg-[#161F33] rounded-3xl p-6">
-              <h3 className="text-gray-400 uppercase text-sm">
-                Appearance & Vault
-              </h3>
-
-              <div className="flex justify-between items-center mt-8">
-                <span>Dark Theme Mode</span>
-
-                <button className="w-12 h-12 rounded-full bg-[#263149]">
-                  🌙
-                </button>
+              <div className="mt-4">
+                <span className="bg-green-600 px-4 py-1 rounded-full text-sm capitalize">
+                  {profile.role || "User"}
+                </span>
               </div>
 
-              <button className="mt-8 w-full bg-green-500 py-3 rounded-xl">
-                Open Prescription Vault
-              </button>
             </div>
+
           </div>
+
+          <div className="grid lg:grid-cols-3 gap-8 mt-8">
+
+            <div className="lg:col-span-2 bg-[#161F33] rounded-3xl p-8">
+
+              <h2 className="text-2xl font-semibold mb-8">
+                Personal Information
+              </h2>
+
+              <label className="block mb-2">
+                Full Name
+              </label>
+
+              <input
+                value={profile.name}
+                onChange={(e) =>
+                  setProfile({
+                    ...profile,
+                    name: e.target.value,
+                  })
+                }
+                className="w-full bg-[#263149] p-4 rounded-xl mb-6 outline-none"
+              />
+
+              <label className="block mb-2">
+                Email
+              </label>
+
+              <input
+                value={profile.email}
+                disabled
+                className="w-full bg-[#1d2435] p-4 rounded-xl mb-6 text-gray-400"
+              />
+
+              <label className="block mb-2">
+                Phone Number
+              </label>
+
+              <input
+                value={profile.phone}
+                onChange={(e) =>
+                  setProfile({
+                    ...profile,
+                    phone: e.target.value,
+                  })
+                }
+                className="w-full bg-[#263149] p-4 rounded-xl mb-6 outline-none"
+              />
+
+              <label className="block mb-2">
+                Address
+              </label>
+
+              <textarea
+                rows={4}
+                value={profile.address}
+                onChange={(e) =>
+                  setProfile({
+                    ...profile,
+                    address: e.target.value,
+                  })
+                }
+                className="w-full bg-[#263149] p-4 rounded-xl outline-none"
+              />
+
+              <button
+                disabled
+                className="mt-8 bg-gray-600 px-8 py-3 rounded-xl cursor-not-allowed"
+              >
+                Update API Not Available
+              </button>
+
+            </div>
+                        <div className="space-y-8">
+
+              <div className="bg-[#161F33] rounded-3xl p-6">
+
+                <h3 className="text-gray-400 uppercase text-sm">
+                  Account Information
+                </h3>
+
+                <div className="mt-6 space-y-5">
+
+                  <div>
+                    <p className="text-gray-400 text-sm">
+                      User Role
+                    </p>
+                    <p className="text-lg font-semibold capitalize">
+                      {profile.role || "Not Available"}
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="text-gray-400 text-sm">
+                      Phone Number
+                    </p>
+                    <p className="text-lg">
+                      {profile.phone || "Not Available"}
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="text-gray-400 text-sm">
+                      Address
+                    </p>
+                    <p className="text-lg">
+                      {profile.address || "Not Available"}
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="text-gray-400 text-sm">
+                      Joined On
+                    </p>
+                    <p className="text-lg">
+                      {profile.created_at
+                        ? new Date(profile.created_at).toLocaleDateString()
+                        : "Not Available"}
+                    </p>
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div className="bg-[#161F33] rounded-3xl p-6">
+
+                <h3 className="text-gray-400 uppercase text-sm mb-6">
+                  Quick Actions
+                </h3>
+
+                <button
+                  disabled
+                  className="w-full bg-gray-600 py-3 rounded-xl cursor-not-allowed mb-4"
+                >
+                  Edit Profile (Coming Soon)
+                </button>
+
+                <button
+                  disabled
+                  className="w-full bg-green-700/50 py-3 rounded-xl cursor-not-allowed"
+                >
+                  Prescription Vault (Coming Soon)
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
         </div>
       </div>
-    </div>
-    <Footer/>
+
+      <Footer />
     </>
   );
 }
