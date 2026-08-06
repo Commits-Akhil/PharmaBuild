@@ -21,15 +21,15 @@ function removeToast(id) {
 }
 
 const icons = {
-  success: <CheckCircle size={18} className="text-green-400 flex-shrink-0" />,
-  error: <XCircle size={18} className="text-red-400 flex-shrink-0" />,
-  warning: <AlertCircle size={18} className="text-yellow-400 flex-shrink-0" />,
+  success: <CheckCircle size={18} className="text-emerald-700 flex-shrink-0" />,
+  error: <XCircle size={18} className="text-rose-700 flex-shrink-0" />,
+  warning: <AlertCircle size={18} className="text-amber-700 flex-shrink-0" />,
 };
 
 const borders = {
-  success: "border-green-500/40",
-  error: "border-red-500/40",
-  warning: "border-yellow-500/40",
+  success: "border-emerald-200",
+  error: "border-rose-200",
+  warning: "border-amber-200",
 };
 
 export default function ToastContainer() {
@@ -45,19 +45,19 @@ export default function ToastContainer() {
   if (toasts.length === 0) return null;
 
   return (
-    <div className="fixed top-5 right-5 z-[9999] flex flex-col gap-3 max-w-sm w-full pointer-events-none">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[9999] flex flex-col gap-3 max-w-sm w-[calc(100vw-2rem)] sm:w-full pointer-events-none">
       {toasts.map((t) => (
         <div
           key={t.id}
-          className={`flex items-start gap-3 bg-[#1a2540] border ${
+          className={`flex items-start gap-3 bg-white border ${
             borders[t.type] ?? borders.success
-          } rounded-2xl px-4 py-3 shadow-2xl pointer-events-auto animate-slideIn`}
+          } rounded-2xl px-4 py-3 shadow-sm pointer-events-auto animate-slideIn`}
         >
           {icons[t.type] ?? icons.success}
-          <p className="text-white text-sm leading-snug flex-1">{t.message}</p>
+          <p className="text-slate-800 text-sm leading-snug flex-1">{t.message}</p>
           <button
             onClick={() => removeToast(t.id)}
-            className="text-gray-400 hover:text-white ml-1"
+            className="text-slate-400 hover:text-slate-700 ml-1"
           >
             <X size={14} />
           </button>

@@ -31,30 +31,30 @@ export default function MedicinesPage() {
   return (
     <>
       <Header />
-      <div className="bg-[#0B1220] min-h-screen py-6 sm:py-10 px-4 sm:px-6 lg:px-8">
+      <div className="bg-slate-50 min-h-screen py-6 sm:py-10 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <section className="bg-gradient-to-r from-emerald-800 via-[#132838] to-[#161F33] rounded-[24px] sm:rounded-[30px] p-6 sm:p-8 md:p-10 border border-white/10 mb-6 sm:mb-8">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">
+          <section className="bg-white rounded-[24px] sm:rounded-[30px] p-6 sm:p-8 md:p-10 border border-slate-200 shadow-sm mb-6 sm:mb-8">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900">
               Medicines Catalog
             </h1>
-            <p className="text-gray-300 mt-2 text-sm sm:text-base max-w-2xl leading-relaxed">
+            <p className="text-slate-600 mt-2 text-sm sm:text-base max-w-2xl leading-relaxed">
               Browse genuine pharmaceutical medicines available across all
               RxConnect partner branches.
             </p>
           </section>
 
-          <div className="bg-[#161F33] rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-white/10 mb-6 sm:mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-slate-200 mb-6 sm:mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm">
             <div className="relative flex-1 max-w-xl">
               <Search
                 size={18}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
               />
               <input
                 type="text"
                 placeholder="Search medicine name (e.g. Paracetamol)..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full rounded-xl sm:rounded-2xl border border-gray-700 bg-[#0D1527] pl-11 pr-4 py-3 text-white placeholder-gray-500 outline-none focus:border-emerald-500 text-xs sm:text-sm"
+                className="w-full rounded-xl sm:rounded-2xl border border-slate-200 bg-slate-50 pl-11 pr-4 py-3 text-slate-900 placeholder-slate-400 outline-none focus:border-emerald-400 text-xs sm:text-sm"
               />
             </div>
 
@@ -65,8 +65,8 @@ export default function MedicinesPage() {
                   onClick={() => setFilter(f)}
                   className={`px-4 py-2.5 sm:px-5 rounded-xl font-semibold text-xs transition ${
                     filter === f
-                      ? "bg-emerald-600 text-white shadow-lg shadow-emerald-900/40"
-                      : "bg-[#0D1527] border border-white/5 text-gray-400 hover:text-white"
+                      ? "bg-emerald-700 text-white"
+                      : "bg-slate-100 border border-slate-200 text-slate-600 hover:text-slate-900"
                   }`}
                 >
                   {f === "Prescription" ? "Rx Required" : f}
@@ -78,11 +78,11 @@ export default function MedicinesPage() {
           {loading && <SkeletonMedicineGrid count={8} />}
 
           {error && (
-            <div className="bg-rose-500/10 border border-rose-500/30 rounded-2xl p-8 sm:p-12 text-center text-rose-400">
+            <div className="bg-rose-50 border border-rose-200 rounded-2xl p-8 sm:p-12 text-center text-rose-700">
               <p className="font-semibold text-base sm:text-lg">{error}</p>
               <button
                 onClick={fetchMedicines}
-                className="mt-4 bg-rose-600 text-white px-6 py-2 rounded-xl text-xs font-bold"
+                className="mt-4 bg-rose-700 text-white px-6 py-2 rounded-xl text-xs font-bold"
               >
                 Retry Loading
               </button>
@@ -90,12 +90,12 @@ export default function MedicinesPage() {
           )}
 
           {!loading && !error && filtered.length === 0 && (
-            <div className="bg-[#161F33] rounded-3xl p-10 sm:p-16 text-center text-gray-400 border border-white/10">
+            <div className="bg-white rounded-3xl p-10 sm:p-16 text-center text-slate-500 border border-slate-200">
               <span className="text-4xl mb-2 block">🔍</span>
-              <p className="text-base sm:text-lg font-semibold text-white">
+              <p className="text-base sm:text-lg font-semibold text-slate-900">
                 No medicines match your search.
               </p>
-              <p className="text-xs text-gray-400 mt-1">
+              <p className="text-xs text-slate-500 mt-1">
                 Try clearing your search query or filter options.
               </p>
             </div>

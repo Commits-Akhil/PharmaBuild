@@ -165,24 +165,24 @@ export default function SignupPage() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-[#0b1120] p-4 sm:p-6">
-      <div className="grid w-full max-w-7xl grid-cols-1 md:grid-cols-12 overflow-hidden rounded-2xl sm:rounded-3xl border border-gray-800 shadow-2xl">
+    <main className="flex min-h-screen items-center justify-center bg-slate-50 p-4 sm:p-6">
+      <div className="grid w-full max-w-7xl grid-cols-1 md:grid-cols-12 overflow-hidden rounded-2xl sm:rounded-3xl border border-slate-200 shadow-sm bg-white">
 
         {/* Left Side */}
-        <div className="relative hidden md:block md:col-span-5 overflow-hidden bg-gradient-to-br from-emerald-600 via-teal-700 to-green-900 min-h-[550px]">
+        <div className="relative hidden md:block md:col-span-5 overflow-hidden min-h-[550px] border-r border-slate-200">
 
           <Image
             src="/doctor.jpeg"
             alt="Medical Illustration"
             fill
             priority
-            className="object-cover opacity-60"
+            className="object-cover"
           />
 
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0b1120] via-transparent to-transparent"></div>
+          <div className="absolute inset-0 bg-slate-900/45"></div>
 
           <div className="absolute bottom-12 left-10 right-10 z-10 text-white">
-            <p className="mb-4 inline-block rounded-full bg-emerald-500/20 border border-emerald-500/40 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider backdrop-blur">
+            <p className="mb-4 inline-block rounded-full bg-white/15 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider backdrop-blur">
               💊 Multi-Branch Smart Pharmacy
             </p>
 
@@ -192,7 +192,7 @@ export default function SignupPage() {
               RxConnect
             </h1>
 
-            <p className="mt-4 text-sm lg:text-base leading-relaxed text-emerald-100/80">
+            <p className="mt-4 text-sm lg:text-base leading-relaxed text-slate-100">
               Create your account to order medicines, track live deliveries,
               upload doctor prescriptions, or manage branch inventory.
             </p>
@@ -201,22 +201,22 @@ export default function SignupPage() {
         </div>
 
         {/* Right Side */}
-        <div className="md:col-span-7 flex items-center justify-center bg-[#111827] px-5 py-8 sm:px-10 sm:py-10 md:px-12">
+        <div className="md:col-span-7 flex items-center justify-center bg-white px-5 py-8 sm:px-10 sm:py-10 md:px-12">
 
           <div className="w-full max-w-md">
 
             <div className="mb-6 sm:mb-8">
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
                 Create Account
               </h2>
 
-              <p className="mt-2 text-xs sm:text-sm text-gray-400">
+              <p className="mt-2 text-xs sm:text-sm text-slate-500">
                 Enter your information to get started with RxConnect.
               </p>
             </div>
 
             {error && (
-              <div className="mb-6 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-xs sm:text-sm font-medium text-red-400">
+              <div className="mb-6 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-xs sm:text-sm font-medium text-rose-700">
                 {error}
               </div>
             )}
@@ -225,7 +225,7 @@ export default function SignupPage() {
 
               {/* Role */}
               <div>
-                <label className="mb-2 block text-xs font-semibold uppercase text-gray-300">
+                <label className="mb-2 block text-xs font-semibold uppercase text-slate-600">
                   Select Role
                 </label>
 
@@ -236,8 +236,8 @@ export default function SignupPage() {
                     onClick={() => setRole("customer")}
                     className={`py-2 rounded-xl text-xs font-semibold border ${
                       role === "customer"
-                        ? "bg-emerald-600 border-emerald-500 text-white"
-                        : "bg-[#1f2937] border-gray-700 text-gray-400"
+                        ? "bg-emerald-700 border-emerald-700 text-white"
+                        : "bg-slate-100 border-slate-200 text-slate-600"
                     }`}
                   >
                     Customer
@@ -248,8 +248,8 @@ export default function SignupPage() {
                     onClick={() => setRole("pharmacist")}
                     className={`py-2 rounded-xl text-xs font-semibold border ${
                       role === "pharmacist"
-                        ? "bg-emerald-600 border-emerald-500 text-white"
-                        : "bg-[#1f2937] border-gray-700 text-gray-400"
+                        ? "bg-emerald-700 border-emerald-700 text-white"
+                        : "bg-slate-100 border-slate-200 text-slate-600"
                     }`}
                   >
                     Pharmacist
@@ -260,8 +260,8 @@ export default function SignupPage() {
                     onClick={() => setRole("admin")}
                     className={`py-2 rounded-xl text-xs font-semibold border ${
                       role === "admin"
-                        ? "bg-emerald-600 border-emerald-500 text-white"
-                        : "bg-[#1f2937] border-gray-700 text-gray-400"
+                        ? "bg-emerald-700 border-emerald-700 text-white"
+                        : "bg-slate-100 border-slate-200 text-slate-600"
                     }`}
                   >
                     Admin
@@ -273,7 +273,7 @@ export default function SignupPage() {
               {(role === "admin" || role === "pharmacist") && (
                 <div>
 
-                  <label className="mb-2 block text-xs font-semibold uppercase text-amber-400">
+                  <label className="mb-2 block text-xs font-semibold uppercase text-amber-700">
                     Secret Key
                   </label>
 
@@ -282,7 +282,7 @@ export default function SignupPage() {
                     placeholder="Enter Secret Key"
                     value={roleSecret}
                     onChange={(e) => setRoleSecret(e.target.value)}
-                    className="w-full rounded-xl border border-amber-500/40 bg-[#1f2937] px-4 py-3 text-sm text-white placeholder-gray-500 outline-none focus:border-amber-400"
+                    className="w-full rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-amber-400"
                   />
 
                 </div>
@@ -291,7 +291,7 @@ export default function SignupPage() {
               {role === "pharmacist" && (
                 <div>
 
-                  <label className="mb-2 block text-xs font-semibold uppercase text-emerald-400">
+                  <label className="mb-2 block text-xs font-semibold uppercase text-emerald-700">
                     Branch ID
                   </label>
 
@@ -301,14 +301,14 @@ export default function SignupPage() {
                     placeholder="Enter Branch ID"
                     value={branchId}
                     onChange={(e) => setBranchId(e.target.value)}
-                    className="w-full rounded-xl border border-emerald-500/40 bg-[#1f2937] px-4 py-3 text-sm text-white placeholder-gray-500 outline-none focus:border-emerald-400"
+                    className="w-full rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-emerald-400"
                   />
 
                 </div>
               )}
                             <div>
 
-                <label className="mb-2 block text-xs font-semibold uppercase text-gray-300">
+                <label className="mb-2 block text-xs font-semibold uppercase text-slate-600">
                   Full Name
                 </label>
 
@@ -317,14 +317,14 @@ export default function SignupPage() {
                   placeholder="Enter your full name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full rounded-xl border border-gray-700 bg-[#1f2937] px-4 py-3 text-sm text-white placeholder-gray-500 outline-none focus:border-emerald-500"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-emerald-400"
                 />
 
               </div>
 
               <div>
 
-                <label className="mb-2 block text-xs font-semibold uppercase text-gray-300">
+                <label className="mb-2 block text-xs font-semibold uppercase text-slate-600">
                   Email Address
                 </label>
 
@@ -333,7 +333,7 @@ export default function SignupPage() {
                   placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full rounded-xl border border-gray-700 bg-[#1f2937] px-4 py-3 text-sm text-white placeholder-gray-500 outline-none focus:border-emerald-500"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-emerald-400"
                 />
 
               </div>
@@ -342,7 +342,7 @@ export default function SignupPage() {
 
                 <div>
 
-                  <label className="mb-2 block text-xs font-semibold uppercase text-gray-300">
+                  <label className="mb-2 block text-xs font-semibold uppercase text-slate-600">
                     Password
                   </label>
 
@@ -351,14 +351,14 @@ export default function SignupPage() {
                     placeholder="Minimum 6 characters"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full rounded-xl border border-gray-700 bg-[#1f2937] px-4 py-3 text-sm text-white placeholder-gray-500 outline-none focus:border-emerald-500"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-emerald-400"
                   />
 
                 </div>
 
                 <div>
 
-                  <label className="mb-2 block text-xs font-semibold uppercase text-gray-300">
+                  <label className="mb-2 block text-xs font-semibold uppercase text-slate-600">
                     Confirm Password
                   </label>
 
@@ -372,7 +372,7 @@ export default function SignupPage() {
                         handleSignup();
                       }
                     }}
-                    className="w-full rounded-xl border border-gray-700 bg-[#1f2937] px-4 py-3 text-sm text-white placeholder-gray-500 outline-none focus:border-emerald-500"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-emerald-400"
                   />
 
                 </div>
@@ -381,7 +381,7 @@ export default function SignupPage() {
 
               <div>
 
-                <label className="mb-2 block text-xs font-semibold uppercase text-gray-300">
+                <label className="mb-2 block text-xs font-semibold uppercase text-slate-600">
                   Phone (Optional)
                 </label>
 
@@ -390,14 +390,14 @@ export default function SignupPage() {
                   placeholder="Enter your phone number"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="w-full rounded-xl border border-gray-700 bg-[#1f2937] px-4 py-3 text-sm text-white placeholder-gray-500 outline-none focus:border-emerald-500"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-emerald-400"
                 />
 
               </div>
 
               <div>
 
-                <label className="mb-2 block text-xs font-semibold uppercase text-gray-300">
+                <label className="mb-2 block text-xs font-semibold uppercase text-slate-600">
                   Address (Optional)
                 </label>
 
@@ -406,7 +406,7 @@ export default function SignupPage() {
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   rows={3}
-                  className="w-full rounded-xl border border-gray-700 bg-[#1f2937] px-4 py-3 text-sm text-white placeholder-gray-500 outline-none focus:border-emerald-500 resize-none"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 placeholder-slate-400 outline-none focus:border-emerald-400 resize-none"
                 />
 
               </div>
@@ -415,18 +415,18 @@ export default function SignupPage() {
                 type="button"
                 onClick={handleSignup}
                 disabled={loading}
-                className="w-full rounded-xl bg-emerald-600 py-3.5 font-bold text-white text-sm transition hover:bg-emerald-500 disabled:opacity-60"
+                className="w-full rounded-xl bg-emerald-700 py-3.5 font-bold text-white text-sm transition hover:bg-emerald-800 disabled:opacity-60"
               >
                 {buttonText}
               </button>
 
             </div>
 
-            <p className="mt-6 text-center text-sm text-gray-400">
+            <p className="mt-6 text-center text-sm text-slate-500">
               Already have an account?{" "}
               <Link
                 href="/Login"
-                className="font-semibold text-emerald-400 hover:text-emerald-300"
+                className="font-semibold text-emerald-700 hover:text-emerald-800"
               >
                 Sign In
               </Link>

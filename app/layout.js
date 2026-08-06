@@ -4,6 +4,7 @@ import Footer from "./components/footer";
 
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import ToastContainer from "./components/Toast";
 
 
 const geistSans = Geist({
@@ -30,6 +31,7 @@ export default function RootLayout({ children }) {
       <body className="min-h-full flex flex-col">
         {/* <Header/> */}
         {children}
+        <ToastContainer />
         {/* <Footer/> */}
         {/* <MoveUp/> */}
         </body>

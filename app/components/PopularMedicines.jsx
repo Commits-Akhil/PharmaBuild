@@ -20,7 +20,7 @@ export default function PopularMedicines() {
           {[...Array(4)].map((_, i) => (
             <div
               key={i}
-              className="bg-[#141B2D] rounded-3xl h-64 animate-pulse border border-gray-700"
+              className="bg-white rounded-3xl h-64 animate-pulse border border-slate-200"
             />
           ))}
         </div>
@@ -31,7 +31,7 @@ export default function PopularMedicines() {
   if (error) {
     return (
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
-        <div className="text-red-400 text-center py-8 text-sm sm:text-base">
+        <div className="text-rose-700 text-center py-8 text-sm sm:text-base">
           {error}
         </div>
       </section>
