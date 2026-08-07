@@ -15,7 +15,16 @@ export default function PharmacistDashboard() {
   const [showReason, setShowReason] = useState({});
   const [reason, setReason] = useState({});
   const [actionLoading, setActionLoading] = useState({});
-  const [selectedImage, setSelectedImage] = useState(null);
+  // selectedFile can be { url, type: 'image'|'pdf'|'docx' }
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  function getFileType(url) {
+    if (!url) return "image";
+    const lower = url.toLowerCase();
+    if (lower.endsWith(".pdf")) return "pdf";
+    if (lower.endsWith(".docx")) return "docx";
+    return "image";
+  }
 
   async function fetchPrescriptions() {
     setLoading(true);
@@ -182,18 +191,30 @@ export default function PharmacistDashboard() {
                       </div>
                     </div>
 
-                    {/* Image Preview Thumbnail */}
+                    {/* File Preview Thumbnail */}
                     <div className="relative group rounded-2xl overflow-hidden bg-slate-50 border border-slate-200 mb-5 h-40 sm:h-48 flex items-center justify-center">
-                      <img
-                        src={getImageUrl(presc.image_url)}
-                        alt="Prescription Document"
-                        className="w-full h-full object-contain p-2"
-                      />
+                      {getFileType(presc.image_url) === "pdf" ? (
+                        <div className="flex flex-col items-center gap-2 text-slate-500">
+                          <span className="text-4xl">📄</span>
+                          <span className="text-xs font-semibold">PDF Document</span>
+                        </div>
+                      ) : getFileType(presc.image_url) === "docx" ? (
+                        <div className="flex flex-col items-center gap-2 text-slate-500">
+                          <span className="text-4xl">📝</span>
+                          <span className="text-xs font-semibold">Word Document</span>
+                        </div>
+                      ) : (
+                        <img
+                          src={getImageUrl(presc.image_url)}
+                          alt="Prescription Document"
+                          className="w-full h-full object-contain p-2"
+                        />
+                      )}
                       <button
-                        onClick={() => setSelectedImage(getImageUrl(presc.image_url))}
+                        onClick={() => setSelectedFile({ url: getImageUrl(presc.image_url), type: getFileType(presc.image_url) })}
                         className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white font-medium text-xs sm:text-sm gap-2"
                       >
-                        <Eye size={18} /> Inspect Full Screen
+                        <Eye size={18} /> {getFileType(presc.image_url) === "image" ? "Inspect Full Screen" : "Open File"}
                       </button>
                     </div>
                   </div>
@@ -271,21 +292,54 @@ export default function PharmacistDashboard() {
         </div>
       </div>
 
-      {/* Image Modal Lightbox */}
-      {selectedImage && (
+      {/* File Modal / Lightbox */}
+      {selectedFile && (
         <div className="fixed inset-0 z-[999] bg-black/90 flex items-center justify-center p-3 sm:p-4">
           <div className="relative max-w-4xl w-full max-h-[90vh] bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-4 border border-slate-200 flex flex-col items-center">
             <button
-              onClick={() => setSelectedImage(null)}
+              onClick={() => setSelectedFile(null)}
               className="absolute top-3 right-3 text-slate-500 hover:text-slate-900 bg-slate-100 p-2 rounded-full z-10"
             >
               ✕
             </button>
-            <img
-              src={selectedImage}
-              alt="Prescription Full Screen"
-              className="max-h-[80vh] w-auto object-contain rounded-xl"
-            />
+            {selectedFile.type === "pdf" && (
+              <>
+                <iframe
+                  src={selectedFile.url}
+                  title="Prescription PDF"
+                  className="w-full rounded-xl border border-slate-200"
+                  style={{ height: "75vh" }}
+                />
+                <a
+                  href={selectedFile.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 text-xs text-blue-600 hover:underline font-medium"
+                >
+                  📄 Open PDF in new tab
+                </a>
+              </>
+            )}
+            {selectedFile.type === "docx" && (
+              <div className="flex flex-col items-center gap-4 py-10">
+                <span className="text-6xl">📝</span>
+                <p className="text-slate-700 font-semibold">Word Document (.docx)</p>
+                <a
+                  href={selectedFile.url}
+                  download
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl text-sm font-bold transition"
+                >
+                  ⬇️ Download Document
+                </a>
+              </div>
+            )}
+            {selectedFile.type === "image" && (
+              <img
+                src={selectedFile.url}
+                alt="Prescription Full Screen"
+                className="max-h-[80vh] w-auto object-contain rounded-xl"
+              />
+            )}
           </div>
         </div>
       )}

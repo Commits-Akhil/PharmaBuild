@@ -16,6 +16,56 @@ import {
 import { toast } from "../../components/Toast";
 import { SkeletonCard } from "../../components/Skeleton";
 
+
+// Renders the correct viewer based on file extension
+function PrescriptionViewer({ url }) {
+  if (!url) return null;
+  const lower = url.toLowerCase();
+  if (lower.endsWith(".pdf")) {
+    return (
+      <div className="w-full">
+        <iframe
+          src={url}
+          title="Prescription PDF"
+          className="w-full rounded-xl border border-slate-200"
+          style={{ height: "380px" }}
+        />
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-2 inline-flex items-center gap-1.5 text-xs text-blue-600 hover:underline font-medium"
+        >
+          📄 Open PDF in new tab
+        </a>
+      </div>
+    );
+  }
+  if (lower.endsWith(".docx")) {
+    return (
+      <div className="flex flex-col items-center gap-3 py-6">
+        <span className="text-5xl">📄</span>
+        <p className="text-slate-700 text-sm font-semibold">Word Document (.docx)</p>
+        <a
+          href={url}
+          download
+          className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition"
+        >
+          ⬇️ Download Document
+        </a>
+      </div>
+    );
+  }
+  // Default: image
+  return (
+    <img
+      src={url}
+      alt="Prescription Document"
+      className="w-full h-auto rounded-xl object-contain max-h-80"
+    />
+  );
+}
+
 function StatusBadge({ status }) {
   const colours = {
     Placed: "bg-blue-500/20 text-blue-300 border-blue-500/30",
@@ -85,7 +135,7 @@ export default function OrderDetailPage() {
 
   const handleUpload = async () => {
     if (!prescFile) {
-      setUploadError("Please select an image file first.");
+      setUploadError("Please select a file (JPG, PNG, PDF, or DOCX).");
       return;
     }
     setUploading(true);
@@ -238,22 +288,18 @@ export default function OrderDetailPage() {
                         </div>
                       )}
                       <div className="bg-slate-50 p-3 sm:p-4 rounded-2xl border border-slate-200 max-w-md">
-                        <img
-                          src={getImageUrl(prescription.image_url)}
-                          alt="Prescription Document"
-                          className="w-full h-auto rounded-xl object-contain max-h-80"
-                        />
+                        <PrescriptionViewer url={getImageUrl(prescription.image_url)} />
                       </div>
                     </div>
                   ) : (
                     <div className="bg-amber-50 border border-amber-200 p-4 sm:p-6 rounded-2xl">
                       <p className="text-amber-700 text-xs sm:text-sm font-semibold mb-4">
-                        ⚠️ Order Pending: Upload your doctor prescription image
-                        to allow pharmacist verification.
+                        ⚠️ Order Pending: Upload your doctor prescription (image,
+                        PDF, or DOCX) to allow pharmacist verification.
                       </p>
                       <input
                         type="file"
-                        accept=".jpg,.jpeg,.png,.webp,.gif"
+                        accept=".jpg,.jpeg,.png,.webp,.gif,.pdf,.docx"
                         onChange={(e) => setPrescFile(e.target.files[0])}
                         className="text-slate-700 text-xs sm:text-sm mb-4 block w-full"
                       />

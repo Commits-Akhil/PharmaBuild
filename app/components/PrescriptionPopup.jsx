@@ -89,18 +89,18 @@ export default function PrescriptionPopup({
           </p>
 
           <p className="text-gray-400 text-xs sm:text-sm mt-1">
-            JPG, PNG, WebP (Max 5MB)
+            JPG, PNG, WebP, PDF, DOCX (Max 10MB)
           </p>
 
           <input
             type="file"
-            accept=".jpg,.jpeg,.png,.webp,.gif"
+            accept=".jpg,.jpeg,.png,.webp,.gif,.pdf,.docx"
             className="mt-4 sm:mt-6 text-xs sm:text-sm text-white max-w-full"
             onChange={(e) => setFile(e.target.files[0])}
           />
           {file && (
             <p className="text-emerald-400 text-xs sm:text-sm mt-2 font-medium">
-              {file.name}
+              📎 {file.name}
             </p>
           )}
         </div>
