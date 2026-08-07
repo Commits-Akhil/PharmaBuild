@@ -40,6 +40,7 @@ export default function LoginPage() {
 
       if (user.role === "admin") router.push("/Admin");
       else if (user.role === "pharmacist") router.push("/branch");
+      else if (user.role === "delivery_partner") router.push("/delivery/home");
       else router.push("/");
     } catch (err) {
       const msg = err.response?.data?.message || "Login failed. Please check your credentials.";

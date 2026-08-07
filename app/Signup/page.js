@@ -14,7 +14,7 @@ const SignupSchema = z
     email: z.string().email("Enter a valid email address"),
     password: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z.string(),
-    role: z.enum(["customer", "pharmacist", "admin"]),
+    role: z.enum(["customer", "pharmacist", "admin", "delivery_partner"]),
     role_secret: z.string().optional(),
     phone: z.string().optional(),
     address: z.string().optional(),
@@ -33,7 +33,7 @@ const SignupSchema = z
 
     return true;
   }, {
-    message: "Secret key is required for Admin and Pharmacist roles",
+    message: "Secret key is required for Admin, Pharmacist, and Delivery Partner roles",
     path: ["role_secret"],
   })
   .refine(function (data) {
@@ -135,6 +135,8 @@ export default function SignupPage() {
         router.push("/Admin");
       } else if (user.role === "pharmacist") {
         router.push("/branch");
+      } else if (user.role === "delivery_partner") {
+        router.push("/delivery/home");
       } else {
         router.push("/");
       }
@@ -229,7 +231,7 @@ export default function SignupPage() {
                   Select Role
                 </label>
 
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 gap-2">
 
                   <button
                     type="button"
@@ -265,6 +267,18 @@ export default function SignupPage() {
                     }`}
                   >
                     Admin
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setRole("delivery_partner")}
+                    className={`py-2 rounded-xl text-xs font-semibold border ${
+                      role === "delivery_partner"
+                        ? "bg-amber-600 border-amber-600 text-white"
+                        : "bg-slate-100 border-slate-200 text-slate-600"
+                    }`}
+                  >
+                    Delivery Partner
                   </button>
 
                 </div>
